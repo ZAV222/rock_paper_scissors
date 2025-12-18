@@ -3,20 +3,34 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * max)
 }
 
-let mainChoice = "";
+
 
 // computer choosen value
 function getComputerChoice() {
     
     let choice = getRandomInt(3)
     if (choice == 0) {
-        mainChoice += "rock paper"
+        let mainChoice = "rock paper";
+        return mainChoice;
     }
-    else if(choice == 1){
-        mainChoice += "rock scissor"
+    if (choice == 1) {
+        let mainChoice = "rock scissor";
+        return mainChoice;
     }
-    else {
-        mainChoice += "paper scissor"
+    if (choice == 2) {
+        let mainChoice = "paper scissor";
+        return mainChoice;
     }
- 
+    
 }
+
+// Get human choice
+function getHumanChoice() {
+    let humanChoice = prompt("Enter your choice:");
+
+    return humanChoice.toLocaleLowerCase();
+
+}
+
+
+
