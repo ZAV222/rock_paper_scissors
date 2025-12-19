@@ -77,9 +77,10 @@ let computerScore = 0;
 
 function playGame() {
     let tracker = 0;
-    let computerC = getComputerChoice();
-    let humanC = getHumanChoice();
+    
     while (tracker < 5) {
+        let computerC = getComputerChoice();
+        let humanC = getHumanChoice();
         let store = playRound(computerC,humanC);
         if (store == "cmp") {
             computerScore = computerScore+1;
