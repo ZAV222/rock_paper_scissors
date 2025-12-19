@@ -90,5 +90,5 @@ function playGame() {
         tracker = tracker+1;
     }
 }
-
+playGame()
 console.log("human score is "+humanScore+" computer score is "+computerScore);
