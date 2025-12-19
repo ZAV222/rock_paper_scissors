@@ -63,3 +63,5 @@ function playRound(getComputerChoice,getHumanChoice){
     }
 }
 
+let humanScore = 0;
+let computerScore = 0;
