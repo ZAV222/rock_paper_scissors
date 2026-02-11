@@ -1,95 +1,77 @@
-// function to generate random value of choice.
+// ---------- Utilities ----------
 function getRandomInt(max) {
-    return Math.floor(Math.random() * max)
+    return Math.floor(Math.random() * max);
 }
 
-
-
-// computer choosen value
+// ---------- Computer choice ----------
 function getComputerChoice() {
-    
-    let choice = getRandomInt(3)
-    if (choice == 0) {
-        let mainChoice = "rock";
-        return mainChoice;
-    }
-    if (choice == 1) {
-        let mainChoice = "paper";
-        return mainChoice;
-    }
-    if (choice == 2) {
-        let mainChoice = "scissor";
-        return mainChoice;
-    }
-    
+    const choices = ["rock", "paper", "scissor"];
+    return choices[getRandomInt(3)];
 }
 
-// Get human choice
-function getHumanChoice() {
-    let humanChoice = prompt("Enter your choice:");
+// ---------- Game logic ----------
+function playRound(computer, human) {
+    if (computer === human) {
+        return "tie";
+    }
 
-    return humanChoice.toLocaleLowerCase();
+    if (
+        (computer === "rock" && human === "scissor") ||
+        (computer === "paper" && human === "rock") ||
+        (computer === "scissor" && human === "paper")
+    ) {
+        return "cmp";
+    }
 
+    return "hmn";
 }
 
-// play round function
-function playRound(getComputerChoice,getHumanChoice){
-    if (getComputerChoice.toLowerCase() == "rock" && getHumanChoice.toLowerCase() == "scissor" ) {
-        console.log("You Lose! rock beats scissor");
-        return "cmp";
-    }
-    if (getComputerChoice.toLowerCase() == "paper" && getHumanChoice.toLowerCase() == "scissor") {
-        console.log("You win! scissor beats rock");
-        return "hmn";
-    }
-    if (getComputerChoice.toLowerCase() == "scissor" && getHumanChoice.toLowerCase() == "scissor") {
-        console.log("Tie! both with scissor");
-        return "tie";
-    }
-    if (getComputerChoice.toLowerCase() == "rock" && getHumanChoice.toLowerCase() == "rock") {
-        console.log("Tie! both with rock");
-        return "tie";
-    }
-    if (getComputerChoice.toLowerCase() == "paper" && getHumanChoice.toLowerCase() == "rock") {
-        console.log("You lose! paper beats rock");
-        return "cmp";
-    }
-    if (getComputerChoice.toLowerCase() == "scissor" && getHumanChoice.toLowerCase() == "rock") {
-        console.log("You win! rock beats scissor");
-        return "hmn";
-    }
-    if (getComputerChoice.toLowerCase() == "rock" && getHumanChoice.toLowerCase() == "paper") {
-        console.log("You win! paper beats rock");
-        return "hmn";
-    }
-    if (getComputerChoice.toLowerCase() == "paper" && getHumanChoice.toLowerCase() == "paper") {
-        console.log("Tie! both with paper");
-        return "tie";
-    }
-    if (getComputerChoice.toLowerCase() == "scissor" && getHumanChoice.toLowerCase() == "paper") {
-        console.log("You lose! scissor beats paper");
-        return "cmp";
-    }
-}
-
+// ---------- Game state ----------
 let humanScore = 0;
 let computerScore = 0;
+let round = 0;
+const maxRounds = 5;
 
-function playGame() {
-    let tracker = 0;
-    
-    while (tracker < 5) {
-        let computerC = getComputerChoice();
-        let humanC = getHumanChoice();
-        let store = playRound(computerC,humanC);
-        if (store == "cmp") {
-            computerScore = computerScore+1;
-        }
-        if (store == "hmn") {
-            humanScore = humanScore+1;
-        }
-        tracker = tracker+1;
+const resultDiv = document.querySelector(".results");
+
+// ---------- Round handler ----------
+function handleRound(humanChoice) {
+    if (round >= maxRounds) return;
+
+    const computerChoice = getComputerChoice();
+    const result = playRound(computerChoice, humanChoice);
+
+    if (result === "hmn") humanScore++;
+    if (result === "cmp") computerScore++;
+
+    round++;
+
+    resultDiv.innerHTML = `
+        <p>Round ${round}</p>
+        <p>Human: ${humanChoice} | Computer: ${computerChoice}</p>
+        <p>Score → Human: ${humanScore}, Computer: ${computerScore}</p>
+    `;
+
+    if (round === maxRounds) {
+        resultDiv.innerHTML += `<h3>Game Over</h3>`;
+        disableButtons();
     }
 }
-playGame()
-console.log("human score is "+humanScore+" computer score is "+computerScore);
+
+// ---------- Disable buttons ----------
+function disableButtons() {
+    document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+}
+
+// ---------- Event listeners ----------
+document.getElementById("btn1").addEventListener("click", () => {
+    handleRound("rock");
+});
+
+document.getElementById("btn2").addEventListener("click", () => {
+    handleRound("paper");
+});
+
+document.getElementById("btn3").addEventListener("click", () => {
+    handleRound("scissor");
+});
